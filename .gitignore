@@ -24,3 +24,6 @@ chroma/
 
 # Python cache
 .pytest_cache/
+
+# WAHA WhatsApp sessions
+sessions/

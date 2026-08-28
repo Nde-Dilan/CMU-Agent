@@ -1,0 +1,25 @@
+version: '3.8'
+
+services:
+  waha:
+    image: devlikeapro/waha:latest
+    container_name: cmu_waha
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    volumes:
+      # Persist WhatsApp login sessions on disk
+      - ./sessions:/app/.sessions
+    environment:
+      # Engine options: NOWEB (fast nodejs socket), WEBJS (browser-based), GOWS (fast Go socket)
+      - WHATSAPP_DEFAULT_ENGINE=NOWEB
+      # Dashboard & API authentication (fixed credentials for development)
+      - WAHA_DASHBOARD_USERNAME=admin
+      - WAHA_DASHBOARD_PASSWORD=admin
+      - WAHA_API_KEY=cmu_agent_waha_key
+      # Automatically push incoming messages to our FastAPI backend
+      - WHATSAPP_HOOK_URL=http://host.docker.internal:8000/webhook/waha
+      - WHATSAPP_HOOK_EVENTS=message
+    extra_hosts:
+      # Allows WAHA inside Docker to reach FastAPI running on the host machine
+      - "host.docker.internal:host-gateway"
