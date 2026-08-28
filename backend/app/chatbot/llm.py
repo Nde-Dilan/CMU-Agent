@@ -1,6 +1,7 @@
 from ollama import chat
+from app.config import settings
 
-MODEL_NAME = "qwen3:8b"
+MODEL_NAME = settings.OLLAMA_MODEL_NAME
 
 
 def generate(messages: list) -> str:
